@@ -12,6 +12,7 @@ The design goals are to simplify considerably the Prelude library so that basic 
 * All arithmetic and comparison is monomorphised to `Integer` i.e., no `Eq`, `Num`, or `Ord` but all the previous operations are there just on `Integer`. This significantly simplifies error messages in beginner programs (i.e., no more `No instance of Num (a -> b)` style error messages).
 * `Foldable` is expunged so there are only higher-order functions on lists
 * `length :: [a] -> Integer` (not `Int` as in Prelude)
+* List comprehensions still work but only on `Integer`
 * No `Monad` class but `return`, `>>=`, `>>`, `fail` are all provided monomorphised to `IO`
 * Specialised `TypeError`s for `Show` on functions, e.g.
 
