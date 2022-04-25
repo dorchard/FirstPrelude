@@ -232,6 +232,7 @@ read = Read.read
 
 instance TypeError
            (Text "Cannot show (pretty print) functions (yours is of type "
-           :<>: ShowType a :<>: Text " -> " :<>: ShowType b :<>: Text ")")
+           :<>: ShowType a :<>: Text " -> " :<>: ShowType b :<>: Text ")"
+           :$$: Text "" :$$: Text "Perhaps there is a missing argument?" :$$: Text "")
            => Show (a -> b) where
    show = undefined

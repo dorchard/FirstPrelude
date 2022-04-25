@@ -9,6 +9,9 @@ allOdd = map (mod 2) -- [Integer] -> [Integer]
 --
 -- <interactive>:2:1: error:
 --    • Cannot show (pretty print) functions (yours is of type Integer -> Integer)
+--
+--      Perhaps there is a missing argument?
+--
 --    • In a stmt of an interactive GHCi command: print it
 
 -- *Main> (+1) "x"

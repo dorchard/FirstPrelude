@@ -20,5 +20,8 @@ The design goals are to simplify considerably the Prelude library so that basic 
 
       <interactive>:48:1: error:
           • Cannot show a function (yours is of type Integer -> Integer)
+
+            Perhaps there is a missing argument?
+
           • In a stmt of an interactive GHCi command: print it
 
