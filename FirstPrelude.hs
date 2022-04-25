@@ -38,7 +38,6 @@ module FirstPrelude (
     Either(Left, Right),
     either,
 
-    Ordering(LT, EQ, GT),
     Char, String,
 
     -- *** Tuples
@@ -96,11 +95,9 @@ module FirstPrelude (
     -- ** Functions on strings
     List.lines, List.words, List.unlines, List.unwords,
 
-    -- * Converting to and from @String@
-    -- ** Converting to @String@
-    Show(showsPrec, showList, show),
-    shows,
-    showChar, showString, showParen,
+    -- * Show / Read (simplified)
+    Show(showsPrec, show),
+    read,
 
     -- * Basic Input and output
     IO,
@@ -134,7 +131,7 @@ import Data.Maybe
 import Data.Tuple
 
 import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..) )
-import Text.Read
+import qualified Text.Read as Read
 import qualified GHC.Enum as Enum
 import qualified GHC.Num as Num
 import GHC.Num(Integer)
@@ -227,6 +224,11 @@ return = Monad.return
 
 fail :: String -> IO a
 fail = (Monad.fail)
+
+-- ** Show gets a fancy error message
+
+read :: String -> Integer
+read = Read.read
 
 instance TypeError
            (Text "Cannot show (pretty print) functions (yours is of type "
