@@ -25,3 +25,13 @@ The design goals are to simplify considerably the Prelude library so that basic 
 
           • In a stmt of an interactive GHCi command: print it
 
+
+## Building
+
+You can download this package and run:
+
+      cabal build
+      cabal --lib install
+
+
+This should globally install the package for you.

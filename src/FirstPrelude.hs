@@ -59,6 +59,7 @@ module FirstPrelude (
     -- *** Numeric operations
     (+), (-), (*), negate, abs, signum, fromInteger,
     quot, rem, div, mod, quotRem, divMod, toInteger,
+    (^),
 
     -- ** Monads and functors
     fmap,
@@ -199,6 +200,9 @@ toInteger   = id
 quotRem, divMod :: Integer -> Integer -> (Integer, Integer)
 quotRem = NumR.quotRem
 divMod  = NumR.divMod
+
+(^) :: Integer -> Integer -> Integer
+(^) = (NumR.^)
 
 -- ** Monomorphised fold things
 
