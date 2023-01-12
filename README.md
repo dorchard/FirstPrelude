@@ -1,7 +1,7 @@
 # FirstPrelude
 A replacement for Haskell's Prelude library (the standard library) designed for teaching beginners.
 
-Recommend use with students:
+Recommended use with students:
 
     import Prelude()     -- Hide normal Prelude
     import FirstPrelude  -- Bring in FirstPrelude
