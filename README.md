@@ -1,6 +1,12 @@
 # FirstPrelude
 A replacement for Haskell's Prelude library (the standard library) designed for teaching beginners.
 
+## Philosophy
+
+The design goals are to simplify considerably the Prelude library so that basic functional programming can be taught without having to explain type classes; I have observed in several years of teaching Haskell that many beginner mistakes which in a language like ML would result in a clear error message instead result in an error message about a lack of type class instances. This is unfortunate as type classes cannot easily be taught immediately and so beginners are left without as much support until they learn more topics. `FirstPrelude` is designed to simplify away as much of this as possible by using very few type classes and making a few other simplifying choices. The goal is then for students to switch to regular Prelude later in the course.
+
+See [details](#Details) below for more information about the difference with standard Prelude.
+
 ## Building
 
 Download this package by cloning this repo, or the [compressed archive from Hackage](https://hackage.haskell.org/package/FirstPrelude).
@@ -21,9 +27,7 @@ Recommended use with students:
     import Prelude()     -- Hide normal Prelude
     import FirstPrelude  -- Bring in FirstPrelude
 
-## Philosophy
-
-The design goals are to simplify considerably the Prelude library so that basic functional programming can be taught without having to explain type classes; I have observed in several years of teaching Haskell that many beginner mistakes which in a language like ML would result in a clear error message instead result in an error message about a lack of type class instances. This is unfortunate as type classes cannot easily be taught immediately and so beginners are left without as much support until they learn more topics. `FirstPrelude` is designed to simplify away as much of this as possible by using very few type classes and making a few other simplifying choices. The goal is then for students to switch to regular Prelude later in the course. The changes here are:
+## Details of changes compared with Prelude
 
 * `Integer` is the only numeric type
 * All arithmetic and comparison is monomorphised to `Integer` i.e., no `Eq`, `Num`, or `Ord` but all the previous operations are there just on `Integer`. This significantly simplifies error messages in beginner programs (i.e., no more `No instance of Num (a -> b)` style error messages).
