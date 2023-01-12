@@ -33,5 +33,8 @@ You can download this package and run:
       cabal build
       cabal --lib install
 
-
 This should globally install the package for you.
+
+If you are having trouble with VS Code seeing this you can try instead
+
+     cabal v1-install
