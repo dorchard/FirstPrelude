@@ -1,11 +1,11 @@
 # FirstPrelude
 A replacement for Haskell's Prelude library (the standard library) designed for teaching beginners.
 
-## Philosophy
+## Philosophy
 
 The design goals are to simplify considerably the Prelude library so that basic functional programming can be taught without having to explain type classes; I have observed in several years of teaching Haskell that many beginner mistakes which in a language like ML would result in a clear error message instead result in an error message about a lack of type class instances. This is unfortunate as type classes cannot easily be taught immediately and so beginners are left without as much support until they learn more topics. `FirstPrelude` is designed to simplify away as much of this as possible by using very few type classes and making a few other simplifying choices. The goal is then for students to switch to regular Prelude later in the course.
 
-See [details](#Details) below for more information about the difference with standard Prelude.
+See [details](#details-of-changes-compared-with-prelude) below for more information about the difference with standard Prelude.
 
 ## Building
 
