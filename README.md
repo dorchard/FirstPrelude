@@ -24,8 +24,9 @@ If you are having trouble with VS Code seeing this you can try instead
 
 Recommended use with students:
 
-    import Prelude()     -- Hide normal Prelude
-    import FirstPrelude  -- Bring in FirstPrelude
+    {-# LANGUAGE RebindableSyntax #-} -- Optional, further simplifies inferred types
+    import Prelude()                  -- Hide normal Prelude
+    import FirstPrelude               -- Bring in FirstPrelude
 
 ## Details of changes compared with Prelude
 
@@ -45,5 +46,3 @@ Recommended use with students:
             Perhaps there is a missing argument?
 
           • In a stmt of an interactive GHCi command: print it
-
-
