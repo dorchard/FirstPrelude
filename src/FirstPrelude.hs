@@ -26,6 +26,9 @@
 
 module FirstPrelude (
 
+    -- * Infrastructure
+    ifThenElse,
+
     -- * Standard types
 
     -- ** Basic data types
@@ -146,7 +149,7 @@ import GHC.TypeLits
 -- Re-export some monomorphised things from foldable
 import qualified Data.Foldable as Foldable
 
-default (Integer) 
+default (Integer)
 
 -- So that RebindableSyntax can also be used
 ifThenElse :: Bool -> a -> a -> a
