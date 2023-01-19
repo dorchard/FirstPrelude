@@ -146,6 +146,13 @@ import GHC.TypeLits
 -- Re-export some monomorphised things from foldable
 import qualified Data.Foldable as Foldable
 
+default (Integer) 
+
+-- So that RebindableSyntax can also be used
+ifThenElse :: Bool -> a -> a -> a
+ifThenElse True x _  = x
+ifThneElse False _ y = y
+
 -- Avoids the Int/Integer problem
 length :: [a] -> Integer
 length []     = 0
