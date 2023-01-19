@@ -154,7 +154,7 @@ default (Integer)
 -- So that RebindableSyntax can also be used
 ifThenElse :: Bool -> a -> a -> a
 ifThenElse True x _  = x
-ifThneElse False _ y = y
+ifThenElse False _ y = y
 
 -- Avoids the Int/Integer problem
 length :: [a] -> Integer
