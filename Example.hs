@@ -1,3 +1,4 @@
+--{-# LANGUAGE RebindableSyntax #-}
 import Prelude()
 import FirstPrelude
 
