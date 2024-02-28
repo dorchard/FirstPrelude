@@ -56,8 +56,8 @@ module FirstPrelude (
 
     -- ** Numbers
 
-    -- *** Only Integers for now folks
-    Integer,
+    -- *** Just expose Integer and Int
+    Integer, Int,
 
     -- *** Numeric operations
     (+), (-), (*), negate, abs, signum, fromInteger,
