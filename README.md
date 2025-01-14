@@ -22,11 +22,13 @@ If you are having trouble with VS Code seeing this you can try instead
 
 ## Usage
 
-Recommended use with students:
+Recommended use for students:
 
     {-# LANGUAGE RebindableSyntax #-} -- Optional, further simplifies inferred types
     import Prelude()                  -- Hide normal Prelude
     import FirstPrelude               -- Bring in FirstPrelude
+
+It can be easiest also just to have `FirstPrelude.hs` in the local folder to avoid having to work with package managers (which may be more difficult on University-managed machines for example).
 
 ## Details of changes compared with Prelude
 
