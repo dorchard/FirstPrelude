@@ -152,7 +152,7 @@ import qualified Data.Foldable as Foldable
 
 default (Integer)
 
--- So that RebindableSyntax can also be used
+-- So that RebindableSyntax can also be used (though this is optional)
 ifThenElse :: Bool -> a -> a -> a
 ifThenElse True x _  = x
 ifThenElse False _ y = y

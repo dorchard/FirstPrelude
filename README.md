@@ -24,7 +24,6 @@ If you are having trouble with VS Code seeing this you can try instead
 
 Recommended use for students:
 
-    {-# LANGUAGE RebindableSyntax #-} -- Optional, further simplifies inferred types
     import Prelude()                  -- Hide normal Prelude
     import FirstPrelude               -- Bring in FirstPrelude
 
