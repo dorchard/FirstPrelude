@@ -79,6 +79,7 @@ module FirstPrelude (
     seq,
 
     -- * List operations
+    and, or,
     List.map, (List.++), List.filter,
     List.head, List.last, List.tail, List.init, (List.!!),
     null, length,
@@ -213,6 +214,14 @@ divMod  = NumR.divMod
 
 (^) :: Integer -> Integer -> Integer
 (^) = (NumR.^)
+
+and :: [Bool] -> Bool
+and []       = True
+and (b : bs) = b && and bs
+
+or :: [Bool] -> Bool
+or []        = False
+or (b : bs)  = b || or bs
 
 -- ** Monomorphised fold things
 
