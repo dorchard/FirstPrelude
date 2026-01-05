@@ -42,6 +42,7 @@ module FirstPrelude (
     either,
 
     Char, String,
+    eqChar, eqString,
 
     -- *** Tuples
     fst, snd, curry, uncurry,
@@ -135,7 +136,7 @@ import Data.Functor     ( (<$>) )
 import Data.Maybe
 import Data.Tuple
 
-import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..) )
+import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..), eqChar, eqString )
 import qualified Text.Read as Read
 import qualified GHC.Enum as Enum
 import qualified GHC.Num as Num
@@ -172,14 +173,11 @@ drop n xs     | n <= 0 = xs
 drop _ []              = []
 drop n (_:xs)         = drop (n-1) xs
 
-replicate :: Integer -> a -> [a]
-replicate n x | n <= 0 = []
-replicate n x          = x : replicate (n-1) x
+eqChar :: Char -> Char -> Bool
+eqChar = (Eq.==)
 
-splitAt :: Integer -> [a] -> ([a], [a])
-splitAt n xs | n <= 0 = ([], xs)
-splitAt _ []          = ([], [])
-splitAt n (x:xs)     = let (ys, zs) = splitAt (n-1) xs in (x:ys, zs)
+eqString :: String -> String -> Bool
+eqString = (Eq.==)
 
 -- ** Monomorphised comparisons and arithmetic
 
@@ -234,6 +232,32 @@ divMod  = NumR.divMod
 (^) :: Integer -> Integer -> Integer
 (^) = (NumR.^)
 
+-- ** List functions
+
+-- Avoids the Int/Integer problem
+length :: [a] -> Integer
+length []     = 0
+length (_:xs) = 1 + length xs
+
+take :: Integer -> [a] -> [a]
+take n _      | n <= 0 = []
+take _ []              = []
+take n (x:xs)         = x : take (n-1) xs
+
+drop :: Integer -> [a] -> [a]
+drop n xs     | n <= 0 = xs
+drop _ []              = []
+drop n (_:xs)         = drop (n-1) xs
+
+replicate :: Integer -> a -> [a]
+replicate n x | n <= 0 = []
+replicate n x          = x : replicate (n-1) x
+
+splitAt :: Integer -> [a] -> ([a], [a])
+splitAt n xs | n <= 0 = ([], xs)
+splitAt _ []          = ([], [])
+splitAt n (x:xs)     = let (ys, zs) = splitAt (n-1) xs in (x:ys, zs)
+
 and :: [Bool] -> Bool
 and []       = True
 and (b : bs) = b && and bs
@@ -241,6 +265,11 @@ and (b : bs) = b && and bs
 or :: [Bool] -> Bool
 or []        = False
 or (b : bs)  = b || or bs
+
+(!!) :: [a] -> Integer -> a
+(x:_)  !! n | n == 0    = x
+(_:xs) !! n | n > 0     = xs !! (n - 1)
+_      !! _              = error "FirstPrelude.!!: index out of bounds"
 
 -- ** Monomorphised fold things
 
