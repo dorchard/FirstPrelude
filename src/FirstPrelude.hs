@@ -42,6 +42,7 @@ module FirstPrelude (
     either,
 
     Char, String,
+    eqChar, eqString,
 
     -- *** Tuples
     fst, snd, curry, uncurry,
@@ -56,8 +57,8 @@ module FirstPrelude (
 
     -- ** Numbers
 
-    -- *** Just expose Integer and Int
-    Integer, Int,
+    -- *** Just expose Integer
+    Integer,
 
     -- *** Numeric operations
     (+), (-), (*), negate, abs, signum, fromInteger,
@@ -79,19 +80,20 @@ module FirstPrelude (
     seq,
 
     -- * List operations
-    List.map, (List.++), List.filter,
-    List.head, List.last, List.tail, List.init, (List.!!),
+    and, or,
+    List.map, (List.++), List.filter, List.concat, List.concatMap,
+    head, last, tail, init, (!!),
     null, length,
     List.reverse,
     -- *** Scans
     List.scanl, List.scanl1, List.scanr, List.scanr1,
     -- *** Infinite lists
-    List.iterate, List.repeat, List.replicate, List.cycle,
+    List.iterate, List.repeat, replicate, List.cycle,
     -- ** Sublists
-    List.take, List.drop,
+    take, drop,
     List.takeWhile, List.dropWhile,
     List.span, List.break,
-    List.splitAt,
+    splitAt,
     -- ** Zipping and unzipping lists
     List.zip, List.zip3,
     List.zipWith, List.zipWith3,
@@ -134,7 +136,8 @@ import Data.Functor     ( (<$>) )
 import Data.Maybe
 import Data.Tuple
 
-import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..) )
+import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..), eqChar, eqString, error, undefined )
+import qualified GHC.Err
 import qualified Text.Read as Read
 import qualified GHC.Enum as Enum
 import qualified GHC.Num as Num
@@ -151,15 +154,18 @@ import qualified Data.Foldable as Foldable
 
 default (Integer)
 
--- So that RebindableSyntax can also be used
+-- So that RebindableSyntax can also be used (though this is optional)
 ifThenElse :: Bool -> a -> a -> a
 ifThenElse True x _  = x
 ifThenElse False _ y = y
 
--- Avoids the Int/Integer problem
-length :: [a] -> Integer
-length []     = 0
-length (_:xs) = 1 + length xs
+-- ** Monomorphised equality for Char and String
+
+eqChar :: Char -> Char -> Bool
+eqChar = (Eq.==)
+
+eqString :: String -> String -> Bool
+eqString = (Eq.==)
 
 -- ** Monomorphised comparisons and arithmetic
 
@@ -214,6 +220,64 @@ divMod  = NumR.divMod
 (^) :: Integer -> Integer -> Integer
 (^) = (NumR.^)
 
+-- ** List functions
+
+-- Avoids the Int/Integer problem
+length :: [a] -> Integer
+length []     = 0
+length (_:xs) = 1 + length xs
+
+take :: Integer -> [a] -> [a]
+take n _      | n <= 0 = []
+take _ []              = []
+take n (x:xs)         = x : take (n-1) xs
+
+drop :: Integer -> [a] -> [a]
+drop n xs     | n <= 0 = xs
+drop _ []              = []
+drop n (_:xs)         = drop (n-1) xs
+
+replicate :: Integer -> a -> [a]
+replicate n x | n <= 0 = []
+replicate n x          = x : replicate (n-1) x
+
+splitAt :: Integer -> [a] -> ([a], [a])
+splitAt n xs | n <= 0 = ([], xs)
+splitAt _ []          = ([], [])
+splitAt n (x:xs)     = let (ys, zs) = splitAt (n-1) xs in (x:ys, zs)
+
+and :: [Bool] -> Bool
+and []       = True
+and (b : bs) = b && and bs
+
+or :: [Bool] -> Bool
+or []        = False
+or (b : bs)  = b || or bs
+
+(!!) :: [a] -> Integer -> a
+(x:_)  !! n | n == 0    = x
+(_:xs) !! n | n > 0     = xs !! (n - 1)
+_      !! _              = error "FirstPrelude.!!: index out of bounds"
+
+-- Overriding these partial functions to remove HasCallStack constraint
+head :: [a] -> a
+head (x:_) = x
+head []    = error "FirstPrelude.head: empty list"
+
+tail :: [a] -> [a]
+tail (_:xs) = xs
+tail []     = error "FirstPrelude.tail: empty list"
+
+last :: [a] -> a
+last [x]    = x
+last (_:xs) = last xs
+last []     = error "FirstPrelude.last: empty list"
+
+init :: [a] -> [a]
+init [_]    = []
+init (x:xs) = x : init xs
+init []     = error "FirstPrelude.init: empty list"
+
 -- ** Monomorphised fold things
 
 null :: [a] -> Bool
@@ -238,6 +302,14 @@ return = Monad.return
 
 fail :: String -> IO a
 fail = (Monad.fail)
+
+-- ** Overriding error and undefined to remove HasCallStack constraint
+
+error :: String -> a
+error = GHC.Err.error
+
+undefined :: a
+undefined = GHC.Err.undefined
 
 -- ** Show gets a fancy error message
 
