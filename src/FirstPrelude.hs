@@ -82,7 +82,7 @@ module FirstPrelude (
     -- * List operations
     and, or,
     List.map, (List.++), List.filter, List.concat, List.concatMap,
-    List.head, List.last, List.tail, List.init, (!!),
+    head, last, tail, init, (!!),
     null, length,
     List.reverse,
     -- *** Scans
@@ -136,7 +136,8 @@ import Data.Functor     ( (<$>) )
 import Data.Maybe
 import Data.Tuple
 
-import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..), eqChar, eqString )
+import GHC.Base hiding ( foldr, mapM, sequence, Eq(..), Ord(..), Monad(..), eqChar, eqString, error, undefined )
+import qualified GHC.Err
 import qualified Text.Read as Read
 import qualified GHC.Enum as Enum
 import qualified GHC.Num as Num
@@ -258,6 +259,25 @@ or (b : bs)  = b || or bs
 (_:xs) !! n | n > 0     = xs !! (n - 1)
 _      !! _              = error "FirstPrelude.!!: index out of bounds"
 
+-- Overriding these partial functions to remove HasCallStack constraint
+head :: [a] -> a
+head (x:_) = x
+head []    = error "FirstPrelude.head: empty list"
+
+tail :: [a] -> [a]
+tail (_:xs) = xs
+tail []     = error "FirstPrelude.tail: empty list"
+
+last :: [a] -> a
+last [x]    = x
+last (_:xs) = last xs
+last []     = error "FirstPrelude.last: empty list"
+
+init :: [a] -> [a]
+init [_]    = []
+init (x:xs) = x : init xs
+init []     = error "FirstPrelude.init: empty list"
+
 -- ** Monomorphised fold things
 
 null :: [a] -> Bool
@@ -282,6 +302,14 @@ return = Monad.return
 
 fail :: String -> IO a
 fail = (Monad.fail)
+
+-- ** Overriding error and undefined to remove HasCallStack constraint
+
+error :: String -> a
+error = GHC.Err.error
+
+undefined :: a
+undefined = GHC.Err.undefined
 
 -- ** Show gets a fancy error message
 
