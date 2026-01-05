@@ -57,8 +57,8 @@ module FirstPrelude (
 
     -- ** Numbers
 
-    -- *** Just expose Integer and Int
-    Integer, Int,
+    -- *** Just expose Integer
+    Integer,
 
     -- *** Numeric operations
     (+), (-), (*), negate, abs, signum, fromInteger,
@@ -81,8 +81,8 @@ module FirstPrelude (
 
     -- * List operations
     and, or,
-    List.map, (List.++), List.filter,
-    List.head, List.last, List.tail, List.init, (List.!!),
+    List.map, (List.++), List.filter, List.concat, List.concatMap,
+    List.head, List.last, List.tail, List.init, (!!),
     null, length,
     List.reverse,
     -- *** Scans
@@ -158,20 +158,7 @@ ifThenElse :: Bool -> a -> a -> a
 ifThenElse True x _  = x
 ifThenElse False _ y = y
 
--- Avoids the Int/Integer problem
-length :: [a] -> Integer
-length []     = 0
-length (_:xs) = 1 + length xs
-
-take :: Integer -> [a] -> [a]
-take n _      | n <= 0 = []
-take _ []              = []
-take n (x:xs)         = x : take (n-1) xs
-
-drop :: Integer -> [a] -> [a]
-drop n xs     | n <= 0 = xs
-drop _ []              = []
-drop n (_:xs)         = drop (n-1) xs
+-- ** Monomorphised equality for Char and String
 
 eqChar :: Char -> Char -> Bool
 eqChar = (Eq.==)
