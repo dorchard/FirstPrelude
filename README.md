@@ -22,19 +22,27 @@ If you are having trouble with VS Code seeing this you can try instead
 
 ## Usage
 
-Recommended use for students:
+Recommended use for students is to include the following two lines at the start of
+any Haskell file:
 
     import Prelude()                  -- Hide normal Prelude
     import FirstPrelude               -- Bring in FirstPrelude
 
 It can be easiest also just to have `FirstPrelude.hs` in the local folder to avoid having to work with package managers (which may be more difficult on University-managed machines for example).
 
+Alternatively, one can do:
+
+    {-# LANGUAGE NoImplicitPrelude #-}
+    import FirstPrelude
+
 ## Details of changes compared with Prelude
 
 * `Integer` is the only numeric type
 * All arithmetic and comparison is monomorphised to `Integer` i.e., no `Eq`, `Num`, or `Ord` but all the previous operations are there just on `Integer`. This significantly simplifies error messages in beginner programs (i.e., no more `No instance of Num (a -> b)` style error messages).
 * `Foldable` is expunged so there are only higher-order functions on lists
-* `length :: [a] -> Integer` (not `Int` as in Prelude)
+* No `HasCallStack` in partial functions like `head`, `tail`, `error`, `undefined`
+* No `Eq` or `Ord` type classes; instead monomorphised equality functions for `Char` and `String` are provided as `eqChar` and `eqString`, and `==` and other comparison operators are only on `Integer`
+* `length :: [a] -> Integer` (not `Int` as in Prelude), and other list functions are similarly monomorphised and simplified to Integer where relevant, e.g., `take :: Integer -> [a] -> [a]`
 * Ranged- based list comprehensions still work (e.g., `[1..3]`) but only on `Integer`
 * No `Monad` class but `return`, `>>=`, `>>`, `fail` are all provided monomorphised to `IO`
 * Specialised `TypeError`s for `Show` on functions, e.g.
