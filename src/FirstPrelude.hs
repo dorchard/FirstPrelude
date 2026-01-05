@@ -87,12 +87,12 @@ module FirstPrelude (
     -- *** Scans
     List.scanl, List.scanl1, List.scanr, List.scanr1,
     -- *** Infinite lists
-    List.iterate, List.repeat, List.replicate, List.cycle,
+    List.iterate, List.repeat, replicate, List.cycle,
     -- ** Sublists
-    List.take, List.drop,
+    take, drop,
     List.takeWhile, List.dropWhile,
     List.span, List.break,
-    List.splitAt,
+    splitAt,
     -- ** Zipping and unzipping lists
     List.zip, List.zip3,
     List.zipWith, List.zipWith3,
@@ -161,6 +161,25 @@ ifThenElse False _ y = y
 length :: [a] -> Integer
 length []     = 0
 length (_:xs) = 1 + length xs
+
+take :: Integer -> [a] -> [a]
+take n _      | n <= 0 = []
+take _ []              = []
+take n (x:xs)         = x : take (n-1) xs
+
+drop :: Integer -> [a] -> [a]
+drop n xs     | n <= 0 = xs
+drop _ []              = []
+drop n (_:xs)         = drop (n-1) xs
+
+replicate :: Integer -> a -> [a]
+replicate n x | n <= 0 = []
+replicate n x          = x : replicate (n-1) x
+
+splitAt :: Integer -> [a] -> ([a], [a])
+splitAt n xs | n <= 0 = ([], xs)
+splitAt _ []          = ([], [])
+splitAt n (x:xs)     = let (ys, zs) = splitAt (n-1) xs in (x:ys, zs)
 
 -- ** Monomorphised comparisons and arithmetic
 
